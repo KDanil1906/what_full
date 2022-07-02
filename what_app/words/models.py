@@ -36,3 +36,12 @@ class Favorite(models.Model):
     user_id = models.ForeignKey(ProfileUser, on_delete=models.CASCADE)
     word_id = models.ForeignKey(Word, on_delete=models.CASCADE)
     fav_add_date = models.DateField(default=datetime.date.today())
+
+    def __str__(self):
+        return self.word_id.word
+
+
+class UsersMars(models.Model):
+    user_id = models.ForeignKey(ProfileUser, on_delete=models.CASCADE)
+    word_id = models.ForeignKey(Word, on_delete=models.CASCADE)
+    mark = models.BooleanField()

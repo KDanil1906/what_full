@@ -1,14 +1,28 @@
 {% for word in words %}
+{% load favorites %}
+
+{% favorite_words request=request as my_words%}
+
 <div class="word__item">
     <div class="word__item-name">
         <a href="">{{word.word}}</a>
         {% if request.user.is_authenticated %}
-        <div class="word__item-favorite">
-            <button>
+        <form class="word__item-form" action="{% url 'favorite' id=word.id %}" method="get">
+            <div class="word__item-favorite">
+                <button type="submit"
+                        {% for i in  my_words %}
+                        {% if i.word_id == word %}
+                class="favorite--clicked"
+                        {% endif %}
+                        {% endfor %}
+                >
+                </button>
+            </div>
+        </form>
 
-            </button>
-        </div>
         {% endif %}
+
+
 
     </div>
     <div class="word__item-desc">
@@ -49,6 +63,7 @@
                                 </svg>
             </a>
         </div>
+        {% if request.user.is_authenticated %}
         <a href="{% url 'complain' id=word.id %}" class="word__item-complain">
             <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"
                  xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img"
@@ -59,6 +74,7 @@
                 </g>
             </svg>
         </a>
+        {% endif %}
     </div>
 </div>
 {% endfor %}

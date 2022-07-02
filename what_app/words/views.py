@@ -1,6 +1,6 @@
 from django.db import IntegrityError
 from django.shortcuts import render, redirect
-from .models import Word, ProfileUser, Complaint
+from .models import Word, ProfileUser, Complaint, Favorite
 from django.views.generic import ListView
 from django.contrib.auth.models import User
 from .forms import RegisterForm, LoginForm, AddWordForm, ProfileUpdate, ComplaintForm
@@ -8,6 +8,7 @@ from django.contrib.auth import login as dj_login, logout as dj_logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse
 
 
 class HomeView(ListView):
@@ -78,6 +79,23 @@ class Search(ListView):
         ctx['s'] = f"s={self.request.GET.get('s')}&"
 
         return ctx
+
+
+def favorite(request, id):
+    data = {}
+    user_id = ProfileUser.objects.get(name=User.objects.get(id=request.user.id))
+    word_id = Word.objects.get(id=id)
+    all_favorites = Favorite.objects.all()
+
+    if all_favorites.filter(user_id=user_id, word_id=word_id).exists():
+        all_favorites.filter(user_id=user_id, word_id=word_id).delete()
+    else:
+        all_favorites.create(
+            user_id=user_id,
+            word_id=word_id
+        )
+
+    return JsonResponse({'data': data})
 
 
 class СomplainView(LoginRequiredMixin, ListView):

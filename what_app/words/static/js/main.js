@@ -1,10 +1,23 @@
 $(function () {
 
-    let favorite_btn = $('.word__item-favorite button')
+    const forms = document.querySelectorAll('.word__item-form')
 
-    favorite_btn.on('click', function(el){
-        $(this).toggleClass('favorite--clicked')
-        console.log(this);
-    });
-  
-  });
+    forms.forEach(function (el) {
+        $(el).on('submit', function (el) {
+            el.preventDefault()
+
+            let favorite_btn = $(this).find('.word__item-favorite').find('button')
+            const posting = $.get($(this).attr('action'));
+            posting.done(function (data) {
+
+                $(favorite_btn).toggleClass('favorite--clicked')
+            });
+            posting.fail(function (data) {
+
+            });
+
+        })
+    })
+
+
+});
