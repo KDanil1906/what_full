@@ -10,7 +10,7 @@
     <div class="container">
         <div class="complain__form-wrapper">
             <div class="complain__form-title">
-                Неприемлемый контент: <span>ТЕЛЕГА</span>
+                Неприемлемый контент: <span>{{word.word}}</span>
             </div>
 
             <div class="complain__form-desc">
@@ -18,11 +18,13 @@
                 удалено с портала
             </div>
 
-            <form action="" class="complain__form-form">
-                <textarea name="" id="" placeholder="Введите текст"></textarea>
+            <form class="complain__form-form" method="post">
+                {%csrf_token%}
+                {{form.complaint}}
+<!--                <textarea name="" id="" placeholder="Введите текст"></textarea>-->
                 <div class="complain__form-formbnts general__btn">
-                    <button>Отмена</button>
-                    <button>Отправить</button>
+                    <a href="{% url 'main' %}">Отмена</a>
+                    <button type="submit">Отправить</button>
                 </div>
             </form>
         </div>

@@ -8,12 +8,12 @@
             </a>
         </div>
         <nav class="header__nav">
-            <form action="" class="nav__search">
+            <form action="{% url 'search' %}" class="nav__search" method="get">
                 <div class="nav__search-input">
-                    <input type="text" placeholder="Введите слово">
+                    <input type="text" placeholder="Введите слово" name="s">
                 </div>
                 <div class="nav__search-button">
-                    <button class="general__btn">Поиск</button>
+                    <button class="general__btn" type="submit">Поиск</button>
                 </div>
             </form>
             {% if request.user.is_authenticated %}

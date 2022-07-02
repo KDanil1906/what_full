@@ -8,6 +8,9 @@ class ProfileUser(models.Model):
     name = models.OneToOneField(User, on_delete=models.CASCADE)
     reg = models.DateField(default=datetime.date.today())
 
+    def __str__(self):
+        return self.name.username
+
 
 class Complaint(models.Model):
     user_id = models.ForeignKey(ProfileUser, on_delete=models.CASCADE)
@@ -18,7 +21,7 @@ class Complaint(models.Model):
 
 class Word(models.Model):
     user_id = models.ForeignKey(ProfileUser, on_delete=models.CASCADE)
-    word = models.CharField(max_length=255, unique=True)
+    word = models.CharField(max_length=150, unique=True)
     definition = models.TextField()
     example = models.TextField()
     like = models.IntegerField(default=0)

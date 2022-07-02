@@ -15,13 +15,13 @@
             <div class="profile__info-user">
                 <div class="info-user__personal-info">
                     <div class="personal-info__name">
-                        Имя пользователя: <span>Aboba</span>
+                        Имя пользователя: <span>{{ user.username }}</span>
                     </div>
                     <div class="personal-info__pass">
                         Пароль: <span>********</span>
                     </div>
                     <div class="personal-info__date">
-                        Дата регистрации: <span>10.06.2022</span>
+                        Дата регистрации: <span>{{ user.date_joined.date|date:"j.m.Y" }}</span>
                     </div>
                 </div>
                 <div class="info-user__actions">
@@ -40,125 +40,7 @@
         </div>
         <div class="words__title">Мои определения</div>
         <div class="words__wrapper">
-            <div class="word__item">
-                <div class="word__item-name">
-                    <a href="">телега</a>
-                    <div class="word__item-favorite">
-                        <button>
-
-                        </button>
-                    </div>
-                </div>
-                <div class="word__item-desc">
-                    Он же Telegram или ТГ - российский мессенджер
-                </div>
-                <div class="word__item-example">
-                    Го в телеге обсудим
-                </div>
-                <div class="word__item-authordate">
-                    <a href="#">Aboba </a> опубликовал <span>12.06.2022</span>
-                </div>
-                <div class="word__item-marks">
-                    <div class="word__item-markswrapper">
-                        <a href="#" class="word__item-markslike">
-                            <span>20</span>
-                            <svg viewBox="0 0 512 512" id="_x30_1" style="enable-background:new 0 0 512 512;"
-                                 version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"
-                                 xmlns:xlink="http://www.w3.org/1999/xlink">
-                                    <g>
-                                        <path
-                                                d="M80,186H20c-11.046,0-20,8.954-20,20v250c0,11.046,8.954,20,20,20h60c11.046,0,20-8.954,20-20V206   C100,194.954,91.046,186,80,186z"/>
-                                        <path
-                                                d="M337.137,186c-15.4,0-25.247-16.411-18-30l36.434-68.313C368.057,64.275,351.092,36,324.559,36h0   c-9.322,0-18.261,3.703-24.853,10.294L183.431,162.569C168.429,177.572,160,197.92,160,219.137V396c0,44.183,35.817,80,80,80   h165.644c27.304,0,51.165-18.435,58.057-44.855l46.577-178.544c1.143-4.383,1.722-8.894,1.722-13.423v0   C512,209.809,488.191,186,458.822,186H337.137z"/>
-                                    </g>
-                                </svg>
-                        </a>
-                        <a href="#" class="word__item-marksdislike">
-                            <span>3</span>
-                            <svg viewBox="0 0 512 512" id="_x30_1" style="enable-background:new 0 0 512 512;"
-                                 version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"
-                                 xmlns:xlink="http://www.w3.org/1999/xlink">
-                                    <g>
-                                        <path
-                                                d="M80,186H20c-11.046,0-20,8.954-20,20v250c0,11.046,8.954,20,20,20h60c11.046,0,20-8.954,20-20V206   C100,194.954,91.046,186,80,186z"/>
-                                        <path
-                                                d="M337.137,186c-15.4,0-25.247-16.411-18-30l36.434-68.313C368.057,64.275,351.092,36,324.559,36h0   c-9.322,0-18.261,3.703-24.853,10.294L183.431,162.569C168.429,177.572,160,197.92,160,219.137V396c0,44.183,35.817,80,80,80   h165.644c27.304,0,51.165-18.435,58.057-44.855l46.577-178.544c1.143-4.383,1.722-8.894,1.722-13.423v0   C512,209.809,488.191,186,458.822,186H337.137z"/>
-                                    </g>
-                                </svg>
-                        </a>
-                    </div>
-                    <a href="#" class="word__item-complain">
-                        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"
-                             xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img"
-                             class="iconify iconify--emojione" preserveAspectRatio="xMidYMid meet">
-                            <g fill="#000">
-                                <path d="M37 42.4H27L23 2h18z"></path>
-                                <ellipse cx="32" cy="54.4" rx="7.7" ry="7.6"></ellipse>
-                            </g>
-                        </svg>
-                    </a>
-                </div>
-            </div>
-
-            <div class="word__item">
-                <div class="word__item-name">
-                    <a href="">телега</a>
-                    <div class="word__item-favorite">
-                        <button>
-
-                        </button>
-                    </div>
-                </div>
-                <div class="word__item-desc">
-                    Он же Telegram или ТГ - российский мессенджер
-                </div>
-                <div class="word__item-exapmple">
-                    Го в телеге обсудим
-                </div>
-                <div class="word__item-authordate">
-                    <a href="#">Aboba </a> опубликовал <span>12.06.2022</span>
-                </div>
-                <div class="word__item-marks">
-                    <div class="word__item-markswrapper">
-                        <a href="#" class="word__item-markslike">
-                            <span>20</span>
-                            <svg viewBox="0 0 512 512" id="_x30_1" style="enable-background:new 0 0 512 512;"
-                                 version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"
-                                 xmlns:xlink="http://www.w3.org/1999/xlink">
-                                    <g>
-                                        <path
-                                                d="M80,186H20c-11.046,0-20,8.954-20,20v250c0,11.046,8.954,20,20,20h60c11.046,0,20-8.954,20-20V206   C100,194.954,91.046,186,80,186z"/>
-                                        <path
-                                                d="M337.137,186c-15.4,0-25.247-16.411-18-30l36.434-68.313C368.057,64.275,351.092,36,324.559,36h0   c-9.322,0-18.261,3.703-24.853,10.294L183.431,162.569C168.429,177.572,160,197.92,160,219.137V396c0,44.183,35.817,80,80,80   h165.644c27.304,0,51.165-18.435,58.057-44.855l46.577-178.544c1.143-4.383,1.722-8.894,1.722-13.423v0   C512,209.809,488.191,186,458.822,186H337.137z"/>
-                                    </g>
-                                </svg>
-                        </a>
-                        <a href="#" class="word__item-marksdislike">
-                            <span>3</span>
-                            <svg viewBox="0 0 512 512" id="_x30_1" style="enable-background:new 0 0 512 512;"
-                                 version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"
-                                 xmlns:xlink="http://www.w3.org/1999/xlink">
-                                    <g>
-                                        <path
-                                                d="M80,186H20c-11.046,0-20,8.954-20,20v250c0,11.046,8.954,20,20,20h60c11.046,0,20-8.954,20-20V206   C100,194.954,91.046,186,80,186z"/>
-                                        <path
-                                                d="M337.137,186c-15.4,0-25.247-16.411-18-30l36.434-68.313C368.057,64.275,351.092,36,324.559,36h0   c-9.322,0-18.261,3.703-24.853,10.294L183.431,162.569C168.429,177.572,160,197.92,160,219.137V396c0,44.183,35.817,80,80,80   h165.644c27.304,0,51.165-18.435,58.057-44.855l46.577-178.544c1.143-4.383,1.722-8.894,1.722-13.423v0   C512,209.809,488.191,186,458.822,186H337.137z"/>
-                                    </g>
-                                </svg>
-                        </a>
-                    </div>
-                    <a href="#" class="word__item-complain">
-                        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"
-                             xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img"
-                             class="iconify iconify--emojione" preserveAspectRatio="xMidYMid meet">
-                            <g fill="#000">
-                                <path d="M37 42.4H27L23 2h18z"></path>
-                                <ellipse cx="32" cy="54.4" rx="7.7" ry="7.6"></ellipse>
-                            </g>
-                        </svg>
-                    </a>
-                </div>
-            </div>
+            {% include 'inc/_word_cycle.html' %}
         </div>
 
         {% include 'inc/_social.html' %}

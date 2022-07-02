@@ -33,3 +33,37 @@ class RegisterForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         del self.fields['password2']
+
+
+class ProfileUpdate(forms.ModelForm):
+    username = forms.CharField(max_length=150, widget=forms.TextInput(attrs={
+        'class': 'login__general-input', 'placeholder': 'Введите имя пользователя', 'type': 'text'
+    }))
+
+    password = forms.CharField(widget=forms.PasswordInput(attrs={
+        'class': 'login__general-input', 'placeholder': 'Введите новый пароль', 'type': 'password'
+    }))
+
+    class Meta:
+        model = User
+        fields = ['username', 'password']
+
+
+class AddWordForm(forms.Form):
+    word = forms.CharField(max_length=150, widget=forms.TextInput(attrs={
+        'class': 'add-word__general-input', 'placeholder': 'Введите слово', 'type': 'text'
+    }))
+
+    definition = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'add-word__general-input', 'placeholder': 'Введите определение', 'type': 'text'
+    }))
+
+    example = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'add-word__general-input', 'placeholder': 'Введите пример', 'type': 'text'
+    }))
+
+
+class ComplaintForm(forms.Form):
+    complaint = forms.CharField(max_length=150, widget=forms.Textarea(attrs={
+        'placeholder': 'Введите текст'
+    }))
