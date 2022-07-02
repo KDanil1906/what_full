@@ -2,9 +2,8 @@ from django.shortcuts import render, redirect
 from .models import Word, ProfileUser
 from django.views.generic import ListView
 from django.contrib.auth.models import User
-from .forms import RegisterForm
-from django.contrib.auth import login
-from datetime import date
+from .forms import RegisterForm, LoginForm
+from django.contrib.auth import login as dj_login, logout as dj_logout
 
 
 class HomeView(ListView):
@@ -19,30 +18,53 @@ class HomeView(ListView):
         return ctx
 
 
+class ProfileView(ListView):
+    model = Word
+    template_name = 'words/profile.html'
+    context_object_name = 'words'
+
+
+class СomplainView(ListView):
+    model = Word
+    template_name = 'words/сomplain.html'
+    context_object_name = 'words'
+
+
+class AddWord(ListView):
+    model = Word
+    template_name = 'words/add_word.html'
+    context_object_name = 'words'
+
+
 def login(request):
     if request.method == 'POST':
-        pass
+        form = LoginForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            dj_login(request, user)
+            return redirect('main')
     else:
-        form = RegisterForm()
+        form = LoginForm()
 
-    return render(request, 'words/login.html', {'title': 'Логин'})
+    return render(request, 'words/login.html', {'title': 'Логин', 'form': form})
+
+
+def logout(request):
+    dj_logout(request)
+    return redirect('main')
 
 
 def register(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
-            form.save()
+            user_form = form.save()
             name = form['username'].value()
-            password = form['password1'].value()
-            today = str(date.today())
             ProfileUser.objects.create(name=User.objects.get(username=name))
-            login(form)
+            dj_login(request, user_form)
             return redirect('main')
         else:
-            print('что то не то')
-            # print(form)
-            pass
+            return redirect('register')
     else:
         print('Неудача')
         form = RegisterForm()

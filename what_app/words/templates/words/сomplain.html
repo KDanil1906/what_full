@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block content %}
+{% include 'inc/_header_nosearch.html' %}
+
+<section class="complain__form">
+    <div class="container">
+        <div class="complain__form-wrapper">
+            <div class="complain__form-title">
+                Неприемлемый контент: <span>ТЕЛЕГА</span>
+            </div>
+
+            <div class="complain__form-desc">
+                Объясните почему вы считаете, что это слово должно быть
+                удалено с портала
+            </div>
+
+            <form action="" class="complain__form-form">
+                <textarea name="" id="" placeholder="Введите текст"></textarea>
+                <div class="complain__form-formbnts general__btn">
+                    <button>Отмена</button>
+                    <button>Отправить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

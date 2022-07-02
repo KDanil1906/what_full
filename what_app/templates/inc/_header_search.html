@@ -16,6 +16,7 @@
                     <button class="general__btn">Поиск</button>
                 </div>
             </form>
+            {% if request.user.is_authenticated %}
             <div class="nav__favorites nav__link--hover">
                 <a href="#">
                     <svg fill="#B13DDA" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
@@ -31,6 +32,7 @@
                         </svg>
                 </a>
             </div>
+            {%endif%}
             <div class="nav__random nav__link--hover">
                 <a href="">
                     <svg fill="#B13DDA" viewBox="0 0 256 256" id="Flat" xmlns="http://www.w3.org/2000/svg">
@@ -40,8 +42,28 @@
 
                 </a>
             </div>
+
+            {% if request.user.is_authenticated %}
+            <div class="nav__addword nav__link--hover">
+                <a href="{% url 'add_word' %}">
+                    <svg version="1.1" fill="#B13DDA" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                         xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 485 485"
+                         style="enable-background:new 0 0 485 485;" xml:space="preserve">
+                            <polygon points="485,227.5 257.5,227.5 257.5,0 227.5,0 227.5,227.5 0,227.5 0,257.5 227.5,257.5 227.5,485 257.5,485 257.5,257.5
+	485,257.5 "/>
+                        </svg>
+
+                </a>
+            </div>
+            {% endif %}
             <div class="nav__user nav__link--hover">
-                <a href="{%url 'login'%}">
+                <a
+                        {% if request.user.is_authenticated %}
+                        href="{%url 'profile'%}"
+                        {% else %}
+                        href="{%url 'login'%}"
+                        {% endif %}
+                >
                     <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
                          xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 490.002 490.002"
                          style="enable-background:new 0 0 490.002 490.002;" xml:space="preserve">

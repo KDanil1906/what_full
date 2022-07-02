@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block content %}
+{% include 'inc/_header_nosearch.html' %}
+
+<section class="common_unit add-word">
+        <div class="container">
+            <div class="add-word__form-wrapper">
+                <div class="common_unit-title add-word__title">
+                    Добавить слово
+                </div>
+
+                <div class="add-word-desc">
+                    Если выхотите, чтобы опубликованная вами информация надолго осталась в базе слов, помните: <span>слово
+                    должо быть полезно другим пользователям и не должно содержать неприемлемый контент</span>
+                </div>
+
+                <form action="" class="complain__form-form">
+                    <label for="word">Слово</label>
+                    <input type="text" name="word" class="add-word__general-input" placeholder="Введите слово">
+                    <label for="definition">Определение</label>
+                    <input type="text" name="definition" class="add-word__general-input" placeholder="Введите определение">
+                    <label for="example">Пример использования в контексте</label>
+                    <input type="text" name="example" class="add-word__general-input" placeholder="Введите пример">
+                    <div class="add-word__form-formbnts general__btn">
+                        <button>Отмена</button>
+                        <button>Отправить</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+    </section>
+
+{% endblock %}

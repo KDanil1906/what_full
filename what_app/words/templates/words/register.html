@@ -12,13 +12,6 @@
 
             <form class="complain__form-form" method="post">
                 {%csrf_token%}
-<!--                <label for="{{ form.name.id_for_label }}">Имя пользователя</label>-->
-<!--                {{form.name}}-->
-<!--                <label for="{{ form.email.id_for_label }}">Email</label>-->
-<!--                {{form.email}}-->
-<!--                <label for="{{ form.password.id_for_label }}">Пароль</label>-->
-<!--                {{form.password}}-->
-
                 <label for="{{ form.username.id_for_label }}">Имя пользователя</label>
                 {{form.username}}
                 <label for="{{ form.email.id_for_label }}">Email</label>

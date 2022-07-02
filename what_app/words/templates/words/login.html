@@ -10,13 +10,16 @@
     <div class="container">
         <div class="login__form-wrapper">
 
-            <form action="" class="complain__form-form">
-                <label for="name">Имя пользователя</label>
-                <input type="text" name="name" class="login__general-input" placeholder="Введите имя пользователя">
-                <label for="pass">Пароль</label>
-                <input type="password" name="pass" class="login__general-input" placeholder="Введите пароль">
+            <form class="complain__form-form" method="post">
+                {%csrf_token%}
+                <label for="{{ form.username.id_for_label }}">Имя пользователя</label>
+                {{form.username}}
+
+                <label for="{{ form.password.id_for_label }}">Пароль</label>
+                {{form.password}}
+
                 <div class="login__form-formbnts general__btn">
-                    <button class="login__form-btn">Войти</button>
+                    <button class="login__form-btn" type="submit">Войти</button>
                 </div>
             </form>
             <div class="login__reg-link">

@@ -1,17 +1,19 @@
+import datetime
+
 from django.db import models
 from django.contrib.auth.models import User
 
 
 class ProfileUser(models.Model):
     name = models.OneToOneField(User, on_delete=models.CASCADE)
-    reg = models.DateField()
+    reg = models.DateField(default=datetime.date.today())
 
 
 class Complaint(models.Model):
     user_id = models.ForeignKey(ProfileUser, on_delete=models.CASCADE)
     word_id = models.ForeignKey('Word', on_delete=models.CASCADE)
     explanation = models.TextField()
-    complaint_add_date = models.DateField()
+    complaint_add_date = models.DateField(default=datetime.date.today())
 
 
 class Word(models.Model):
@@ -21,7 +23,7 @@ class Word(models.Model):
     example = models.TextField()
     like = models.IntegerField(default=0)
     dislike = models.IntegerField(default=0)
-    word_add_date = models.DateField()
+    word_add_date = models.DateField(default=datetime.date.today())
 
     def __str__(self):
         return self.word
@@ -30,4 +32,4 @@ class Word(models.Model):
 class Favorite(models.Model):
     user_id = models.ForeignKey(ProfileUser, on_delete=models.CASCADE)
     word_id = models.ForeignKey(Word, on_delete=models.CASCADE)
-    fav_add_date = models.DateField()
+    fav_add_date = models.DateField(default=datetime.date.today())
