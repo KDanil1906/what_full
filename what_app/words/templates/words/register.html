@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block content %}
+{% include 'inc/_header_nosearch.html' %}
+
+<section class="registration">
+    <div class="container">
+        <div class="registration__form-wrapper">
+
+            <form class="complain__form-form" method="post">
+                {%csrf_token%}
+<!--                <label for="{{ form.name.id_for_label }}">Имя пользователя</label>-->
+<!--                {{form.name}}-->
+<!--                <label for="{{ form.email.id_for_label }}">Email</label>-->
+<!--                {{form.email}}-->
+<!--                <label for="{{ form.password.id_for_label }}">Пароль</label>-->
+<!--                {{form.password}}-->
+
+                <label for="{{ form.username.id_for_label }}">Имя пользователя</label>
+                {{form.username}}
+                <label for="{{ form.email.id_for_label }}">Email</label>
+                {{form.email}}
+                <label for="{{ form.password1.id_for_label }}">Пароль</label>
+                {{form.password1}}
+                <div class="registration__form-formbnts general__btn">
+                    <button class="registration__form-btn" type="submit">Регистрация</button>
+                </div>
+            </form>
+            <div class="registration__reg-link">
+                Есть аккаунт? <a href="{%url 'login'%}">Авторизоваться</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
