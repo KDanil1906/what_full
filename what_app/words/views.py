@@ -1,6 +1,6 @@
 from django.db import IntegrityError
 from django.shortcuts import render, redirect
-from .models import Word, ProfileUser, Complaint, Favorite
+from .models import Word, ProfileUser, Complaint, Favorite, UsersMarks
 from django.views.generic import ListView
 from django.contrib.auth.models import User
 from .forms import RegisterForm, LoginForm, AddWordForm, ProfileUpdate, ComplaintForm
@@ -60,16 +60,25 @@ class Search(ListView):
     paginate_by = 2
 
     def get_queryset(self):
-        all_words = Word.objects.all()
+        print(self.request)
+        total_sample = {}
 
-        # Looking for word matches
-        by_name = all_words.filter(word__icontains=self.request.GET.get('s'))
-        # Looking for a match for the author
-        authors = User.objects.filter(username__icontains=self.request.GET.get('s'))
-        authors = ProfileUser.objects.filter(name__in=authors)
-        by_author = all_words.filter(user_id__in=authors)
-        # table consolidation
-        total_sample = by_name.union(by_author)
+        if self.kwargs['type'] == 'input':
+            all_words = Word.objects.all()
+
+            # Looking for word matches
+            by_name = all_words.filter(word__icontains=self.request.GET.get('s'))
+            # Looking for a match for the author
+            authors = User.objects.filter(username__icontains=self.request.GET.get('s'))
+            authors = ProfileUser.objects.filter(name__in=authors)
+            by_author = all_words.filter(user_id__in=authors)
+            # table consolidation
+            total_sample = by_name.union(by_author)
+        elif self.kwargs['type'] == 'word':
+            total_sample = Word.objects.filter(word__icontains=self.kwargs['value'])
+        elif self.kwargs['type'] == 'author':
+            user_id = ProfileUser.objects.get(name=User.objects.get(username=self.kwargs['value']))
+            total_sample = Word.objects.filter(user_id=user_id)
 
         return total_sample
 
@@ -80,6 +89,33 @@ class Search(ListView):
 
         return ctx
 
+
+class OrderingView(ListView):
+    model = Word
+    template_name = 'words/index.html'
+    context_object_name = 'words'
+    paginate_by = 2
+
+    def get_queryset(self):
+        ordering_db = 1
+
+        if self.kwargs['kind'] == 'random':
+            ordering_db = Word.objects.all().order_by('?')
+            print(ordering_db)
+        elif self.kwargs['kind'] == 'favorite':
+            user_id = ProfileUser.objects.get(name=User.objects.get(username=self.request.user))
+            ordering_db = Favorite.objects.filter(user_id=user_id)
+            ordering_db = Word.objects.filter(id__in=ordering_db)
+        return ordering_db
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        if self.kwargs['kind'] == 'random':
+            ctx['title'] = 'WHAT'
+        elif self.kwargs['kind'] == 'favorite':
+            ctx['title'] = 'favorite'
+
+        return ctx
 
 def favorite(request, id):
     data = {}
@@ -97,8 +133,60 @@ def favorite(request, id):
 
     return JsonResponse({'data': data})
 
+@login_required
+def marks(request, id, mark):
+    data = {}
+    identify_mark = {
+        0: 'like',
+        1: 'dislike'
+    }
 
-class СomplainView(LoginRequiredMixin, ListView):
+    all_words = Word.objects.all()
+    user_id = ProfileUser.objects.get(name=User.objects.get(id=request.user.id))
+    word_id = all_words.get(id=id)
+    all_marks = UsersMarks.objects.all()
+
+    if all_marks.filter(user_id=user_id, word_id=word_id).exists():
+        word_mark = all_marks.filter(user_id=user_id, word_id=word_id).first()
+        user_mark = word_mark.mark
+        if user_mark == bool(mark):
+            print(word_id.like)
+            if bool(mark):
+                word_id.dislike -= 1
+            else:
+                word_id.like -= 1
+            word_id.save()
+
+            word_mark.delete()
+        else:
+            if bool(mark):
+                word_id.like -= 1
+                word_id.dislike += 1
+            else:
+                word_id.like += 1
+                word_id.dislike -= 1
+
+            word_id.save()
+
+            word_mark.mark = bool(mark)
+            word_mark.save()
+    else:
+        all_marks.create(
+            user_id=user_id,
+            word_id=word_id,
+            mark=bool(mark)
+        )
+
+        if bool(mark):
+            word_id.dislike += 1
+        else:
+            word_id.like += 1
+        word_id.save()
+
+    return JsonResponse({'data': data})
+
+
+class ComplainView(LoginRequiredMixin, ListView):
     template_name = 'words/сomplain.html'
     context_object_name = 'word'
 
@@ -156,8 +244,6 @@ def add_word(request):
             except IntegrityError:
                 messages.error(request, 'Такое слово уже существует')
                 return redirect('add_word')
-
-            print(word, definition, example)
 
     else:
         form = AddWordForm()

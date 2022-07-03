@@ -41,7 +41,7 @@ class Favorite(models.Model):
         return self.word_id.word
 
 
-class UsersMars(models.Model):
+class UsersMarks(models.Model):
     user_id = models.ForeignKey(ProfileUser, on_delete=models.CASCADE)
     word_id = models.ForeignKey(Word, on_delete=models.CASCADE)
     mark = models.BooleanField()
