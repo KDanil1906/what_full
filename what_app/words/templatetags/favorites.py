@@ -8,7 +8,6 @@ register = template.Library()
 
 @register.simple_tag()
 def favorite_words(request):
-
     favorite = {}
     marks = {}
     all_favorites = Favorite.objects.all()
@@ -17,8 +16,9 @@ def favorite_words(request):
     if all_favorites.filter(user_id=user_id).exists():
         favorite = all_favorites.filter(user_id=user_id)
 
-    if all_favorites.filter(user_id=user_id).exists():
+    if all_marks.filter(user_id=user_id).exists():
         marks = all_marks.filter(user_id=user_id)
 
-
     return {'favorite': favorite, 'marks': marks}
+
+

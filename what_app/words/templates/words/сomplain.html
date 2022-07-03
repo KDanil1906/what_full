@@ -24,11 +24,13 @@
 <!--                <textarea name="" id="" placeholder="Введите текст"></textarea>-->
                 <div class="complain__form-formbnts general__btn">
                     <a href="{% url 'main' %}">Отмена</a>
-                    <button type="submit">Отправить</button>
+                    <a href="#confirmation-popup" class="complain__form-bnt">Отправить</a>
                 </div>
             </form>
         </div>
     </div>
 </section>
+
+{% include 'inc/_popup.html' %}
 
 {% endblock %}

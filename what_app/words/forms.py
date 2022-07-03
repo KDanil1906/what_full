@@ -13,6 +13,16 @@ class LoginForm(AuthenticationForm):
     }))
 
 
+class NameUserUpdate(forms.ModelForm):
+    username = forms.CharField(max_length=150, widget=forms.TextInput(attrs={
+        'class': 'profile__general-input', 'placeholder': 'Укажите новое имя', 'type': 'text'
+    }))
+
+    class Meta:
+        model = User
+        fields = ['username']
+
+
 class RegisterForm(UserCreationForm):
     username = forms.CharField(max_length=150, widget=forms.TextInput(attrs={
         'class': 'registration__general-input', 'placeholder': 'Введите имя пользователя', 'type': 'text'
@@ -33,20 +43,6 @@ class RegisterForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         del self.fields['password2']
-
-
-class ProfileUpdate(forms.ModelForm):
-    username = forms.CharField(max_length=150, widget=forms.TextInput(attrs={
-        'class': 'login__general-input', 'placeholder': 'Введите имя пользователя', 'type': 'text'
-    }))
-
-    password = forms.CharField(widget=forms.PasswordInput(attrs={
-        'class': 'login__general-input', 'placeholder': 'Введите новый пароль', 'type': 'password'
-    }))
-
-    class Meta:
-        model = User
-        fields = ['username', 'password']
 
 
 class AddWordForm(forms.Form):

@@ -19,7 +19,8 @@
                 <label for="{{ form.password1.id_for_label }}">Пароль</label>
                 {{form.password1}}
                 <div class="registration__form-formbnts general__btn">
-                    <button class="registration__form-btn" type="submit">Регистрация</button>
+<!--                    <button class="registration__form-btn" type="submit">Регистрация</button>-->
+                    <a href="#confirmation-popup" class="registration__form-btn complain__form-bnt">Регистрация</a>
                 </div>
             </form>
             <div class="registration__reg-link">
@@ -28,5 +29,7 @@
         </div>
     </div>
 </section>
+
+{% include 'inc/_popup.html' %}
 
 {% endblock %}

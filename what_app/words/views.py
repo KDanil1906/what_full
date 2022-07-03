@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from .models import Word, ProfileUser, Complaint, Favorite, UsersMarks
 from django.views.generic import ListView
 from django.contrib.auth.models import User
-from .forms import RegisterForm, LoginForm, AddWordForm, ProfileUpdate, ComplaintForm
+from .forms import RegisterForm, LoginForm, AddWordForm, ComplaintForm, NameUserUpdate
 from django.contrib.auth import login as dj_login, logout as dj_logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -21,37 +21,54 @@ class HomeView(ListView):
         ctx = super().get_context_data(**kwargs)
         ctx['title'] = 'WHAT..?'
 
+        ordering_db = {}
+        if self.request.user.is_authenticated:
+            user_id = ProfileUser.objects.get(name=User.objects.get(username=self.request.user))
+            favorite_id = Favorite.objects.filter(user_id=user_id).select_related().all()
+            print(favorite_id)
+
+        ordering_db = Word.objects.all()
+        print(ordering_db)
+
         return ctx
+
+    def get_queryset(self):
+        return Word.objects.all().order_by('-id')
 
 
 class ProfileView(LoginRequiredMixin, ListView):
     model = User
     template_name = 'words/profile.html'
-    context_object_name = 'profile'
+    context_object_name = 'words'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx['form'] = ProfileUpdate(instance=self.request.user)
-        ctx['user'] = User.objects.get(username=self.request.user)
-        ctx['words'] = []
 
-        have_same_words = Word.objects.all().filter(user_id=ProfileUser.objects.get(name=self.request.user))
-        if have_same_words.exists():
-            ctx['words'] = have_same_words
+        ctx['form'] = NameUserUpdate(instance=self.request.user)
+        ctx['user'] = User.objects.get(username=self.request.user)
 
         return ctx
 
-    # def post(self, request, *args, **kwargs):
-    #     profile_for = ProfileUpdate(self.request.POST, instance=self.request.user)
-    #
-    #     if profile_for.is_valid():
-    #         profile_for.save()
-    #
-    #         return redirect('profile')
-    #     else:
-    #         messages.error(self.request, 'Что то пошло не так')
-    #
-    #     return redirect('profile')
+    def get_queryset(self):
+        result_db = {}
+        have_same_words = Word.objects.all().filter(
+            user_id=ProfileUser.objects.get(name=self.request.user)).select_related()
+        if have_same_words.exists():
+            result_db = have_same_words.order_by('-id')
+        return result_db
+
+    def post(self, request, *args, **kwargs):
+        profile_for = NameUserUpdate(self.request.POST ,instance=self.request.user)
+
+        if profile_for.is_valid():
+            profile_for.save()
+
+            print('Данные хороши')
+            return redirect('profile')
+        else:
+            messages.error(self.request, 'Аккаунт с таким именем уже существует')
+
+        return redirect('profile')
 
 
 class Search(ListView):
@@ -97,15 +114,20 @@ class OrderingView(ListView):
     paginate_by = 2
 
     def get_queryset(self):
-        ordering_db = 1
+        ordering_db = []
 
         if self.kwargs['kind'] == 'random':
             ordering_db = Word.objects.all().order_by('?')
             print(ordering_db)
         elif self.kwargs['kind'] == 'favorite':
             user_id = ProfileUser.objects.get(name=User.objects.get(username=self.request.user))
-            ordering_db = Favorite.objects.filter(user_id=user_id)
-            ordering_db = Word.objects.filter(id__in=ordering_db)
+            favorite_id = Favorite.objects.select_related('word_id').filter(user_id=user_id).select_related().all()
+            print(favorite_id)
+            for i in favorite_id:
+                print(i.word_id.like)
+                ordering_db.append(i.word_id)
+
+            print(ordering_db)
         return ordering_db
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -116,6 +138,7 @@ class OrderingView(ListView):
             ctx['title'] = 'favorite'
 
         return ctx
+
 
 def favorite(request, id):
     data = {}
@@ -132,6 +155,7 @@ def favorite(request, id):
         )
 
     return JsonResponse({'data': data})
+
 
 @login_required
 def marks(request, id, mark):

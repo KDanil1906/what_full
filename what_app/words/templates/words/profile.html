@@ -8,6 +8,22 @@
 
 <section class="words">
     <div class="container">
+        {% if messages %}
+                {% for message in messages %}
+                <div class="messages">
+                    {% if message.tags == 'error' %}
+                    <div class="messages__error">
+                        {{ message|safe }}
+                    </div>
+                    {% else %}
+                    <div class="messages__success">
+                        {{ message }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                {% endfor %}
+                {% endif %}
         <div class="profile__info">
             <div class="profile__info-title">
                 Мой профиль
@@ -26,7 +42,7 @@
                 </div>
                 <div class="info-user__actions">
                     <div class="actions__change-profile">
-                        <a href="#">
+                        <a href="#change_name" class="change-name__magnific-popup">
                             Изменить данные профиля
                         </a>
                     </div>
@@ -46,5 +62,23 @@
         {% include 'inc/_social.html' %}
     </div>
 </section>
+
+<div id="change_name" class="profile-change mfp-hide">
+    <div class="profile-change__wrapper">
+        <form class="profile-change__form" method="post">
+            {% csrf_token %}
+            <label for="{{ form.username.id_for_label }}">Изменить имя</label>
+                {{form.username}}
+
+
+<!--            <label for="name">Изменине имя</label>-->
+<!--            <input type="text" name="name" class="profile__general-input" placeholder="укажите новое имя">-->
+            <div class="profile-change__submit-btn general__btn">
+                <button type="submit">Изменить</button>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
 
 {% endblock %}

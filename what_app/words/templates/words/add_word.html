@@ -35,7 +35,7 @@
                 {% endfor %}
                 {% endif %}
 
-                <form class="complain__form-form" method="post">
+                <form class="complain__form-form " method="post">
                     {%csrf_token%}
                     <label for="{{ form.word.id_for_label }}">Имя пользователя</label>
                     {{form.word}}
@@ -44,14 +44,14 @@
                     <label for="{{ form.example.id_for_label }}">Пример использования в контексте</label>
                     {{form.example}}
                     <div class="add-word__form-formbnts general__btn">
-                        <button>Отмена</button>
-                        <button type="submit">Отправить</button>
+                        <a href="{% url 'main' %}">Отмена</a>
+                        <a href="#confirmation-popup" class="complain__form-bnt">Отправить</a>
                     </div>
                 </form>
             </div>
-
         </div>
-
     </section>
+
+{% include 'inc/_popup.html' %}
 
 {% endblock %}
