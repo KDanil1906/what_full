@@ -65,15 +65,6 @@ $(function () {
                     $(el).find('span').text(text_el)
                 }
             }
-
-
-            // if ($(el).attr('class').indexOf(selector) !== -1) {
-            //     let text = Number($(el).find('span').text()) - 1
-            //     $(el).find('span').text(text)
-            // } else {
-            //     let text = Number($(el).find('span').text()) + 1
-            //     $(el).find('span').text(text)
-            // }
             $(el).toggleClass(selector)
         });
         posting.fail(function (data) {

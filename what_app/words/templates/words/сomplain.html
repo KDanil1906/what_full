@@ -21,7 +21,6 @@
             <form class="complain__form-form" method="post">
                 {%csrf_token%}
                 {{form.complaint}}
-<!--                <textarea name="" id="" placeholder="Введите текст"></textarea>-->
                 <div class="complain__form-formbnts general__btn">
                     <a href="{% url 'main' %}">Отмена</a>
                     <a href="#confirmation-popup" class="complain__form-bnt">Отправить</a>

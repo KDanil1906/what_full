@@ -21,15 +21,14 @@ class HomeView(ListView):
         ctx = super().get_context_data(**kwargs)
         ctx['title'] = 'WHAT..?'
 
-        ordering_db = {}
-        if self.request.user.is_authenticated:
-            user_id = ProfileUser.objects.get(name=User.objects.get(username=self.request.user))
-            favorite_id = Favorite.objects.filter(user_id=user_id).select_related().all()
-            print(favorite_id)
-
-        ordering_db = Word.objects.all()
-        print(ordering_db)
-
+        # ordering_db = {}
+        # if self.request.user.is_authenticated:
+        #     user_id = ProfileUser.objects.get(name=User.objects.get(username=self.request.user)).select_related()
+        #     favorite_id = Favorite.objects.filter(user_id=user_id).select_related().select_related().all()
+        #     print(favorite_id)
+        #
+        # ordering_db = Word.objects.all()
+        # print(ordering_db)
         return ctx
 
     def get_queryset(self):
@@ -63,7 +62,6 @@ class ProfileView(LoginRequiredMixin, ListView):
         if profile_for.is_valid():
             profile_for.save()
 
-            print('Данные хороши')
             return redirect('profile')
         else:
             messages.error(self.request, 'Аккаунт с таким именем уже существует')
@@ -77,7 +75,6 @@ class Search(ListView):
     paginate_by = 2
 
     def get_queryset(self):
-        print(self.request)
         total_sample = {}
 
         if self.kwargs['type'] == 'input':
@@ -118,16 +115,12 @@ class OrderingView(ListView):
 
         if self.kwargs['kind'] == 'random':
             ordering_db = Word.objects.all().order_by('?')
-            print(ordering_db)
         elif self.kwargs['kind'] == 'favorite':
             user_id = ProfileUser.objects.get(name=User.objects.get(username=self.request.user))
             favorite_id = Favorite.objects.select_related('word_id').filter(user_id=user_id).select_related().all()
-            print(favorite_id)
             for i in favorite_id:
-                print(i.word_id.like)
                 ordering_db.append(i.word_id)
 
-            print(ordering_db)
         return ordering_db
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -160,10 +153,6 @@ def favorite(request, id):
 @login_required
 def marks(request, id, mark):
     data = {}
-    identify_mark = {
-        0: 'like',
-        1: 'dislike'
-    }
 
     all_words = Word.objects.all()
     user_id = ProfileUser.objects.get(name=User.objects.get(id=request.user.id))
@@ -174,7 +163,6 @@ def marks(request, id, mark):
         word_mark = all_marks.filter(user_id=user_id, word_id=word_id).first()
         user_mark = word_mark.mark
         if user_mark == bool(mark):
-            print(word_id.like)
             if bool(mark):
                 word_id.dislike -= 1
             else:
@@ -237,8 +225,6 @@ class ComplainView(LoginRequiredMixin, ListView):
                 word_id=word_id,
                 explanation=explanation
             )
-            print(user_id)
-            print(word_id)
 
             return redirect('main')
         else:
@@ -305,7 +291,6 @@ def register(request):
         else:
             return redirect('register')
     else:
-        print('Неудача')
         form = RegisterForm()
 
     return render(request, 'words/register.html', {'title': 'Регистрация', 'form': form})
